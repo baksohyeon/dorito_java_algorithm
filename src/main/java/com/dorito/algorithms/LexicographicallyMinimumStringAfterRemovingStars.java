@@ -11,6 +11,7 @@ public class LexicographicallyMinimumStringAfterRemovingStars {
         StringBuilder sb = new StringBuilder();
 
 
+
         // count the number of stars
         // if zero, then return the original string.
         // if stars * 2 == string.length(), then return ""
@@ -19,6 +20,8 @@ public class LexicographicallyMinimumStringAfterRemovingStars {
         // 1)
         // Find the first star at least index, then remove one character is lexicographically smaller than the previous character
         // if same lexicographically, delete one any of them.
+        // all the cases should be covered.
+        // dfs 사용 think
 
         // 2)
         // delete selected star and char
@@ -26,11 +29,13 @@ public class LexicographicallyMinimumStringAfterRemovingStars {
         // 3) check if the string is empty
         // if empty, return ""
 
+
         // base condition:
         // remove all stars
 
 
 
+        // sorting and return index 0
 
 
     return "";
