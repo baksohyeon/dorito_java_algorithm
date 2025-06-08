@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 @DisplayName("문자열에서 별표 제거 후 사전순 최소값 찾기 테스트")
 class LexicographicallyMinimumStringAfterRemovingStarsTest {
@@ -17,307 +20,253 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
     }
 
     @Nested
-    @DisplayName("basic test")
-    class BasicTests {
+    @DisplayName("LeetCode 공식 예제")
+    class OfficialExamples {
 
         @Test
-        @DisplayName("별표가 없는 문자열은 그대로 반환되어야 함")
-        void shouldReturnSameStringWhenNoStars() {
-            // Given
-            String input = "abc";
-
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("abc");
+        @DisplayName("예제 1: aaba* → aab")
+        void example1() {
+            assertThat(solution.clearStars("aaba*"))
+                    .isEqualTo("aab");
         }
 
         @Test
-        @DisplayName("단일 문자는 그대로 반환되어야 함")
-        void shouldHandleSingleCharacter() {
-            // Given
-            String input = "a";
-
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("a");
+        @DisplayName("예제 2: abc → abc (별표 없음)")
+        void example2() {
+            assertThat(solution.clearStars("abc"))
+                    .isEqualTo("abc");
         }
     }
 
     @Nested
-    @DisplayName("예제 케이스 테스트")
-    class ExampleTests {
+    @DisplayName("기본 동작 검증")
+    class BasicBehaviorTests {
 
-        @Test
-        @DisplayName("예제 1: aaba* -> aab")
-        void shouldHandleExample1() {
-            // Given
-            String input = "aaba*";
+        @ParameterizedTest
+        @CsvSource({
+                "a*, ''",
+                "ab*, b",
+                "ba*, b",
+                "abc*, bc",
+                "cba*, cb"
+        })
+        @DisplayName("단일 별표 처리 - 가장 작은 문자 제거")
+        void singleStarRemovesSmallestCharacter(String input, String expected) {
+            assertThat(solution.clearStars(input))
+                    .isEqualTo(expected);
+        }
 
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("aab");
+        @ParameterizedTest
+        @ValueSource(strings = {"", "a", "abc", "zyxwvu", "abcdefghijklmnopqrstuvwxyz"})
+        @DisplayName("별표가 없으면 원본 문자열 반환")
+        void noStarsReturnOriginal(String input) {
+            assertThat(solution.clearStars(input))
+                    .isEqualTo(input);
         }
 
         @Test
-        @DisplayName("예제 2: abc -> abc (별표 없음)")
-        void shouldHandleExample2() {
-            // Given
-            String input = "abc";
+        @DisplayName("같은 가장 작은 문자가 여러 개일 때 가장 오른쪽 제거")
+        void removesRightmostOfSmallestCharacters() {
+            // "abab*" → 'a' 중 오른쪽(인덱스 2) 제거 → "abb"
+            assertThat(solution.clearStars("abab*"))
+                    .isEqualTo("abb");
 
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("abc");
-        }
-    }
-
-    @Nested
-    @DisplayName("별표 처리 테스트")
-    class StarRemovalTests {
-
-        @Test
-        @DisplayName("하나의 별표는 왼쪽에서 사전순으로 가장 작은 문자를 제거해야 함")
-        void shouldRemoveSmallestCharacterToLeft() {
-            // Given
-            String input = "bac*";
-
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("bc");
-        }
-
-        @Test
-        @DisplayName("여러 개의 별표는 순차적으로 처리되어야 함")
-        void shouldHandleMultipleStars() {
-            // Given
-            String input = "dcba**";
-
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("dc");
-        }
-
-        @Test
-        @DisplayName("연속된 같은 문자에서 별표 처리 - 가장 오른쪽 문자 제거")
-        void shouldRemoveRightmostOfSameCharacters() {
-            // Given
-            String input = "aaa*";
-
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("aa");
-        }
-
-        @Test
-        @DisplayName("별표 앞에 다양한 문자가 있을 때 가장 작은 문자 제거")
-        void shouldRemoveSmallestAmongVariousCharacters() {
-            // Given
-            String input = "zyxabc*";
-
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("zyxbc");
+            // "aaaa*" → 가장 오른쪽 'a' 제거 → "aaa"
+            assertThat(solution.clearStars("aaaa*"))
+                    .isEqualTo("aaa");
         }
     }
 
     @Nested
-    @DisplayName("복잡한 케이스 테스트")
-    class ComplexTests {
+    @DisplayName("복수 별표 처리")
+    class MultipleStarsTests {
 
-        @Test
-        @DisplayName("별표와 문자가 번갈아 나타나는 경우")
-        void shouldHandleAlternatingStarsAndChars() {
-            // Given
-            String input = "a*b*c*";
-
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("");
-        }
-
-        @Test
-        @DisplayName("긴 문자열에서 여러 별표 처리")
-        void shouldHandleMultipleStarsInLongString() {
-            // Given
-            String input = "abcdef*g*h*";
-
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            // 첫 번째 *: 'a' 제거, 두 번째 *: 'b' 제거, 세 번째 *: 'c' 제거
-            assertThat(result).isEqualTo("defgh");
-        }
-
-        @Test
+        @ParameterizedTest
+        @CsvSource({
+                "ab**, ''",
+                "abc**, c",
+                "abcd**, cd",
+                "dcba**, dc"
+        })
         @DisplayName("연속된 별표들 처리")
-        void shouldHandleConsecutiveStars() {
-            // Given
-            String input = "abcd***";
+        void consecutiveStars(String input, String expected) {
+            assertThat(solution.clearStars(input))
+                    .isEqualTo(expected);
+        }
 
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("d");
+        @ParameterizedTest
+        @CsvSource({
+                "a*b*, ''",
+                "a*b*c*, ''",
+                "ab*cd*, cd",
+                "abc*def*, cdef"
+        })
+        @DisplayName("별표와 문자가 교대로 나타나는 패턴")
+        void alternatingPattern(String input, String expected) {
+            assertThat(solution.clearStars(input))
+                    .isEqualTo(expected);
         }
 
         @Test
-        @DisplayName("복잡한 패턴 - 문자열 중간과 끝에 별표")
-        void shouldHandleComplexPattern() {
-            // Given
-            String input = "ab*cd*ef*";
+        @DisplayName("복잡한 다중 별표 시나리오")
+        void complexMultipleStars() {
+            assertThat(solution.clearStars("abcdef*g*h*"))
+                    .isEqualTo("defgh");
 
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            // 첫 번째 *: 'a' 제거, 두 번째 *: 'b' 제거, 세 번째 *: 'c' 제거
-            assertThat(result).isEqualTo("def");
-        }
-
-        @Test
-        @DisplayName("사전순으로 정렬된 문자열에서 별표 처리")
-        void shouldHandleSortedString() {
-            // Given
-            String input = "abcdefg*";
-
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("bcdefg");
-        }
-
-        @Test
-        @DisplayName("역순으로 정렬된 문자열에서 별표 처리")
-        void shouldHandleReverseSortedString() {
-            // Given
-            String input = "gfedcba*";
-
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("gfedcb");
+            assertThat(solution.clearStars("ab*cd*ef*"))
+                    .isEqualTo("def");
         }
     }
 
     @Nested
-    @DisplayName("엣지 케이스 테스트")
-    class EdgeCaseTests {
+    @DisplayName("알고리즘 우선순위 검증")
+    class AlgorithmPriorityTests {
 
         @Test
-        @DisplayName("별표만 있는 문자열 (제거할 문자가 없음)")
-        void shouldHandleOnlyStars() {
-            // Given
-            String input = "***";
+        @DisplayName("사전순 우선순위: a < b < c < ... < z")
+        void lexicographicalPriority() {
+            assertThat(solution.clearStars("zyxwvutsrqponmlkjihgfedcba*"))
+                    .isEqualTo("zyxwvutsrqponmlkjihgfedcb"); // 'a' 제거
+        }
 
-            // When
-            String result = solution.clearStars(input);
+        @Test
+        @DisplayName("동일 문자 중 가장 최근(오른쪽) 우선")
+        void rightmostPriorityForSameCharacter() {
+            // a가 여러 개일 때 가장 오른쪽 a 제거
+            assertThat(solution.clearStars("abacada*"))
+                    .isEqualTo("abacad"); // 마지막 'a' 제거
 
-            // Then
-            assertThat(result).isEqualTo("");
+            // b보다 a가 우선, a 중에서는 가장 오른쪽
+            assertThat(solution.clearStars("bababa*"))
+                    .isEqualTo("babab"); // 마지막 'a' 제거
+        }
+
+        @Test
+        @DisplayName("문자가 체인으로 연결되어 처리되는지 확인")
+        void characterChaining() {
+            // 같은 문자가 추가될 때마다 체인의 head가 업데이트되는지 확인
+            assertThat(solution.clearStars("abcabc*"))
+                    .isEqualTo("abcbc"); // 두 번째 'a' 제거
+        }
+    }
+
+    @Nested
+    @DisplayName("경계값 및 특수 케이스")
+    class EdgeCasesTests {
+
+        @ParameterizedTest
+        @ValueSource(strings = {"*", "**", "***", "****"})
+        @DisplayName("별표만 있는 문자열")
+        void onlyStars(String input) {
+            assertThat(solution.clearStars(input))
+                    .isEmpty();
         }
 
         @Test
         @DisplayName("모든 문자가 제거되는 경우")
-        void shouldHandleAllCharactersRemoved() {
-            // Given
-            String input = "a*b*c*";
+        void allCharactersRemoved() {
+            assertThat(solution.clearStars("a*b*c*"))
+                    .isEmpty();
 
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            assertThat(result).isEqualTo("");
+            assertThat(solution.clearStars("abc***"))
+                    .isEmpty();
         }
 
         @Test
-        @DisplayName("최대 길이 문자열 시뮬레이션")
-        void shouldHandleLargeInput() {
-            // Given
+        @DisplayName("대용량 입력 처리 (성능 테스트)")
+        void largeInputPerformance() {
+            // 1000개 문자 + 1개 별표
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < 1000; i++) {
                 sb.append((char)('a' + (i % 26)));
             }
             sb.append("*");
-            String input = sb.toString();
 
-            // When
-            String result = solution.clearStars(input);
+            String result = solution.clearStars(sb.toString());
 
-            // Then
-            // 첫 번째 'a'가 제거되고 나머지는 유지되어야 함
             assertThat(result).hasSize(999);
-            assertThat(result.charAt(0)).isEqualTo('a');
+            assertThat(result.charAt(0)).isEqualTo('a'); // 첫 번째 'a' 제거됨
         }
 
         @Test
-        @DisplayName("동일한 문자들과 별표의 조합")
-        void shouldHandleIdenticalCharactersWithStars() {
-            // Given
-            String input = "aaaaa*a*a*";
+        @DisplayName("최대 별표 수 시나리오")
+        void maximumStarsScenario() {
+            // 문자와 별표가 1:1 비율
+            String input = "abcdefghijk***********"; // 11문자 + 11별표
 
-            // When
             String result = solution.clearStars(input);
 
-            // Then
-            // 5개의 'a' 중 1개 제거, 새로운 'a' 추가 후 제거, 또 새로운 'a' 추가 후 제거
-            // 최종적으로 처음 4개의 'a'만 남음
-            assertThat(result).isEqualTo("aaaa");
+            assertThat(result).isEmpty(); // 모든 문자 제거됨
         }
     }
 
     @Nested
-    @DisplayName("사전순 최소값 검증 테스트")
-    class LexicographicalMinimumTests {
+    @DisplayName("실제 시나리오 시뮬레이션")
+    class RealWorldScenarios {
 
         @Test
-        @DisplayName("여러 선택지 중 사전순으로 가장 작은 결과 확인")
-        void shouldReturnLexicographicallySmallestResult() {
-            // Given
-            String input = "bacb*";
+        @DisplayName("반복 패턴 문자열")
+        void repeatingPatterns() {
+            assertThat(solution.clearStars("abcabc*"))
+                    .isEqualTo("abcbc");
 
-            // When
-            String result = solution.clearStars(input);
-
-            // Then
-            // 'a'를 제거하면 "bcb", 'b'를 제거하면 "acb" 또는 "bac"
-            // 사전순으로 가장 작은 것은 "acb"가 아니라 "bcb"
-            assertThat(result).isEqualTo("bcb");
+            assertThat(solution.clearStars("abcabcabc**"))
+                    .isEqualTo("abcbcbc");
         }
 
         @Test
-        @DisplayName("복수의 가장 작은 문자 중 아무거나 제거 가능")
-        void shouldRemoveAnyOfSmallestCharacters() {
-            // Given
-            String input = "abab*";
+        @DisplayName("알파벳 역순 정렬")
+        void reverseAlphabeticalOrder() {
+            assertThat(solution.clearStars("zyxwvu*"))
+                    .isEqualTo("zyxwv"); // 'u' 제거 (가장 작은 문자)
+        }
 
-            // When
+        @Test
+        @DisplayName("동일한 문자로만 구성된 문자열")
+        void identicalCharacters() {
+            assertThat(solution.clearStars("aaaaa*"))
+                    .isEqualTo("aaaa");
+
+            assertThat(solution.clearStars("bbbbb**"))
+                    .isEqualTo("bbb");
+        }
+
+        @Test
+        @DisplayName("별표가 문자열 중간에 산재")
+        void starsScatteredInMiddle() {
+            assertThat(solution.clearStars("ab*cd*ef*gh"))
+                    .isEqualTo("defgh");
+        }
+    }
+
+    @Nested
+    @DisplayName("결과 속성 검증")
+    class ResultPropertyValidation {
+
+        @Test
+        @DisplayName("결과 문자열에는 별표가 포함되지 않음")
+        void resultContainsNoStars() {
+            String result = solution.clearStars("a*b*c*d*e*f*");
+
+            assertThat(result).doesNotContain("*");
+        }
+
+        @Test
+        @DisplayName("별표 제거 과정에서 문자 순서는 보존됨")
+        void characterOrderPreserved() {
+            // 제거되지 않은 문자들의 상대적 순서는 유지되어야 함
+            String result = solution.clearStars("abcdef*");
+
+            assertThat(result).isEqualTo("bcdef"); // 'a'만 제거, 나머지 순서 유지
+        }
+
+        @Test
+        @DisplayName("입력 길이가 결과 길이보다 크거나 같음")
+        void inputLengthGreaterThanOrEqualToResult() {
+            String input = "abcdef***";
             String result = solution.clearStars(input);
 
-            // Then
-            // 'a' 중 아무거나 제거 가능하므로 "bab" 또는 "abb" 가능
-            // 하지만 알고리즘상 가장 오른쪽 'a'가 제거됨
-            assertThat(result).isEqualTo("abb");
+            assertThat(input.length()).isGreaterThanOrEqualTo(result.length());
         }
     }
 }
