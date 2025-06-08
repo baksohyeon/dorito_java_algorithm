@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class LexicographicallyMinimumStringAfterRemovingStars {
 
-    public String minRemoveToMakeValid(String s) {
+    public String clearStars(String s) {
 
         char[] chars = s.toCharArray();
         int[] idxChain = new int[chars.length];

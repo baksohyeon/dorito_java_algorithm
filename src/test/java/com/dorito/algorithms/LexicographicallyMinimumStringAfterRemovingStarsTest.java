@@ -27,7 +27,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "abc";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("abc");
@@ -40,7 +40,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "a";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("a");
@@ -58,7 +58,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "aaba*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("aab");
@@ -71,7 +71,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "abc";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("abc");
@@ -89,7 +89,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "bac*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("bc");
@@ -102,7 +102,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "dcba**";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("dc");
@@ -115,7 +115,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "aaa*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("aa");
@@ -128,7 +128,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "zyxabc*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("zyxbc");
@@ -146,7 +146,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "a*b*c*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("");
@@ -159,7 +159,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "abcdef*g*h*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             // 첫 번째 *: 'a' 제거, 두 번째 *: 'b' 제거, 세 번째 *: 'c' 제거
@@ -173,7 +173,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "abcd***";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("d");
@@ -186,7 +186,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "ab*cd*ef*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             // 첫 번째 *: 'a' 제거, 두 번째 *: 'b' 제거, 세 번째 *: 'c' 제거
@@ -200,7 +200,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "abcdefg*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("bcdefg");
@@ -213,7 +213,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "gfedcba*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("gfedcb");
@@ -231,7 +231,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "***";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("");
@@ -244,7 +244,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "a*b*c*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             assertThat(result).isEqualTo("");
@@ -262,7 +262,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = sb.toString();
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             // 첫 번째 'a'가 제거되고 나머지는 유지되어야 함
@@ -277,7 +277,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "aaaaa*a*a*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             // 5개의 'a' 중 1개 제거, 새로운 'a' 추가 후 제거, 또 새로운 'a' 추가 후 제거
@@ -297,7 +297,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "bacb*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             // 'a'를 제거하면 "bcb", 'b'를 제거하면 "acb" 또는 "bac"
@@ -312,7 +312,7 @@ class LexicographicallyMinimumStringAfterRemovingStarsTest {
             String input = "abab*";
 
             // When
-            String result = solution.minRemoveToMakeValid(input);
+            String result = solution.clearStars(input);
 
             // Then
             // 'a' 중 아무거나 제거 가능하므로 "bab" 또는 "abb" 가능
