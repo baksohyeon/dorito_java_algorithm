@@ -18,10 +18,7 @@ public class LexicographicallyMinimumStringAfterRemovingStars {
             if(chars[i] == '*') {
                 for (int j = 0; j < 26; j++) {
                     if(idxChainRev[j] != -1) {
-//                        int idx = idxChainRev[j];
                         chars[idxChainRev[j]] = '#';
-//                        chars[idx] = '#';
-//                        idxChainRev[j] = idxChain[idx];
                         idxChainRev[j] = idxChain[idxChainRev[j]];
                         break;
                     }
