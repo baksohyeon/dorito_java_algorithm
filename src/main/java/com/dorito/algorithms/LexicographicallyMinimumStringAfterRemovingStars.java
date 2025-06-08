@@ -1,43 +1,45 @@
 package com.dorito.algorithms;
 
+import java.util.Arrays;
+
 public class LexicographicallyMinimumStringAfterRemovingStars {
-    String s = "hello";
-    int length = s.length();
 
     public String minRemoveToMakeValid(String s) {
-        this.s = s;
-        length = s.length();
+
+        char[] chars = s.toCharArray();
+        int[] idxChain = new int[chars.length];
+        int[] idxChainRev = new int[26];
+
+        Arrays.fill(idxChain, -1);
+        Arrays.fill(idxChainRev, -1);
+
+
+        for (int i = 0; i < chars.length; i++) {
+            if(chars[i] == '*') {
+                for (int j = 0; j < 26; j++) {
+                    if(idxChainRev[j] != -1) {
+//                        int idx = idxChainRev[j];
+                        chars[idxChainRev[j]] = '#';
+//                        chars[idx] = '#';
+//                        idxChainRev[j] = idxChain[idx];
+                        idxChainRev[j] = idxChain[idxChainRev[j]];
+                        break;
+                    }
+                }
+                chars[i] = '#';
+            } else {
+                idxChain[i] = idxChainRev[chars[i] - 'a'];
+                idxChainRev[chars[i] - 'a'] = i;
+            }
+        }
 
         StringBuilder sb = new StringBuilder();
+        for (char c : chars) {
+            if (c != '#') {
+                sb.append(c);
+            }
+        }
 
-
-
-        // count the number of stars
-        // if zero, then return the original string.
-        // if stars * 2 == string.length(), then return ""
-
-        // Iterate through string and remove stars
-        // 1)
-        // Find the first star at least index, then remove one character is lexicographically smaller than the previous character
-        // if same lexicographically, delete one any of them.
-        // all the cases should be covered.
-        // dfs 사용 think
-
-        // 2)
-        // delete selected star and char
-
-        // 3) check if the string is empty
-        // if empty, return ""
-
-
-        // base condition:
-        // remove all stars
-
-
-
-        // sorting and return index 0
-
-
-    return "";
+    return sb.toString();
     };
 }
