@@ -11,17 +11,15 @@ public class ArrayStack<E> implements Stack<E> {
         if (capacity <= 0) {
             throw new IllegalArgumentException(STR."Invalid capacity: \{capacity}");
         }
-        stack new E[n]
+        stack = (E[]) new Object[capacity];
         topIndex = -1;
     }
 
     public ArrayStack() {
         this(DEFAULT_CAPACITY);
-        stack new E[DEFAULT_CAPACITY]
         if (stack == null) {
             throw new OutOfMemoryError("Not enough memory to allocate an array of size " + DEFAULT_CAPACITY);
         }
-
     }
 
 
