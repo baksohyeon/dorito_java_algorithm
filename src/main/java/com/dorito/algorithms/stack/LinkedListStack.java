@@ -65,4 +65,16 @@ public class LinkedListStack<E> implements Stack<E> {
         head = null; // 모든 노드의 참조 끊음 → GC 수거 가능
         size = 0;
     }
+
+    public void printStack() {
+        System.out.printf("스택 크기: %d%n", size);
+        System.out.printf("스택 top: %s%n", peek());
+        System.out.print("Linked List: ");
+        Node<E> current = head;
+        while (current != null) {
+            System.out.printf("%s -> ", current.data);
+            current = current.next;
+        }
+        System.out.println();
+    }
 }
