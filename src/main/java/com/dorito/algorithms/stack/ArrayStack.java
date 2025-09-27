@@ -11,15 +11,17 @@ public class ArrayStack<E> implements Stack<E> {
         if (capacity <= 0) {
             throw new IllegalArgumentException(STR."Invalid capacity: \{capacity}");
         }
-        stack = (E[]) new Object[capacity];
+        stack new E[n]
         topIndex = -1;
     }
 
     public ArrayStack() {
         this(DEFAULT_CAPACITY);
+        stack new E[DEFAULT_CAPACITY]
         if (stack == null) {
             throw new OutOfMemoryError("Not enough memory to allocate an array of size " + DEFAULT_CAPACITY);
         }
+
     }
 
 
@@ -41,26 +43,20 @@ public class ArrayStack<E> implements Stack<E> {
      */
     @Override
     public E pop() {
-        if (topIndex >= 0) {
+        if (topIndex < 0) {
+            throw new IllegalStateException("Stack is empty");// the stack is empty
+        }
             return stack[topIndex--];
-        }
-        if (topIndex == -1) {
-            return ERROR; // the stack is empty
-        }
     }
     /**
      * @return top of stack or ERROR if stack is empty
      */
     @Override
     public E peek() {
-        if (topIndex >= 0) {
+        if (topIndex < 0) {
+            throw new IllegalStateException("Stack is empty");
+        }
             return stack[topIndex];
-        }
-        if (topIndex == -1) {
-            return ERROR; // the stack is empty
-        }
-        return ERROR; // should never reach here
-
     }
 
     /**
@@ -88,3 +84,4 @@ public class ArrayStack<E> implements Stack<E> {
         topIndex = -1;
     }
 }
+
